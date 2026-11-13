@@ -1,0 +1,9 @@
+[project]
+name = "siber-kalkan"
+version = "0.1.0"
+description = "Siber Kalkan Otonom Koruma"
+requires-python = ">=3.9"
+dependencies = [
+    "flet>=0.24.0",
+    "pillow"
+]

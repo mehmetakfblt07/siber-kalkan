@@ -12,7 +12,8 @@ jobs:
 
       - name: APK Derle
         run: |
-          buildozer -v android debug
+          sed -i 's/warn_on_root = 1/warn_on_root = 0/g' buildozer.spec
+          yes | buildozer -v android debug
 
       - name: APK Yayinla
         uses: actions/upload-artifact@v4

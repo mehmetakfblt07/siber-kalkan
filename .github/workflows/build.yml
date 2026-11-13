@@ -3,24 +3,19 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    container:
+      image: kivy/buildozer:latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Android SDK Kur ve APK Derle
+      - name: Kodlari Al
+        uses: actions/checkout@v4
+
+      - name: APK Derle
         run: |
-          pip install flet==0.24.1 pillow
-          flet build apk --project SiberKalkan --org org.tubitak --permissions android.permission.READ_EXTERNAL_STORAGE android.permission.WRITE_EXTERNAL_STORAGE android.permission.READ_MEDIA_IMAGES android.permission.READ_MEDIA_VIDEO android.permission.READ_MEDIA_AUDIO
-      - uses: actions/upload-artifact@v4
+          buildozer -v android debug
+
+      - name: APK Yayinla
+        uses: actions/upload-artifact@v4
         with:
           name: SiberKalkan-APK
-          path: build/apk/*.apk
+          path: bin/*.apk

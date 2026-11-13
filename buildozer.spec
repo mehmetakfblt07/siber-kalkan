@@ -5,7 +5,8 @@ package.domain = org.tubitak
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy,pillow
+requirements = python3==3.11.9,kivy==2.3.0,pillow
+
 orientation = portrait
 fullscreen = 0
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,READ_MEDIA_VIDEO,READ_MEDIA_AUDIO

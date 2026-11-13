@@ -4,15 +4,26 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-22.04
-    container:
-      image: kivy/buildozer:latest
     steps:
       - name: Kodlari Al
         uses: actions/checkout@v4
 
+      - name: Python 3.10 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Sistem Paketlerini Kur
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev python3-venv
+
       - name: APK Derle
         run: |
-          sed -i 's/warn_on_root = 1/warn_on_root = 0/g' buildozer.spec
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+          pip install buildozer==1.5.0 cython==0.29.36
           yes | buildozer -v android debug
 
       - name: APK Yayinla

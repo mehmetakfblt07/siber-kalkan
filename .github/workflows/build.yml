@@ -1,28 +1,23 @@
 name: APK Olustur
 on: [push]
+
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Kodlari Al
+        uses: actions/checkout@v4
+
+      - name: Android APK Derle
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          python-version: '3.10'
-      - name: Buildozer Kurulumu
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-          pip install buildozer cython==0.29.36
-          buildozer init
-          sed -i 's/title = My Application/title = Siber Kalkan/g' buildozer.spec
-          sed -i 's/package.name = myapp/package.name = siberkalkan/g' buildozer.spec
-          sed -i 's/requirements = python3,kivy/requirements = python3,kivy,pillow/g' buildozer.spec
-          sed -i 's/android.archs = arm64-v8a, armeabi-v7a/android.archs = arm64-v8a/g' buildozer.spec
-          echo "android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,READ_MEDIA_VIDEO,READ_MEDIA_AUDIO" >> buildozer.spec
-          echo "android.accept_sdk_license = True" >> buildozer.spec
-          yes | buildozer -v android debug
-      - name: APK Yukle
+          command: buildozer android debug
+          buildozer_version: master
+
+      - name: APK Dosyasini Yayinla
         uses: actions/upload-artifact@v4
         with:
           name: SiberKalkan-APK
-          path: bin/*.apk
+          path: ${{ steps.buildozer.outputs.filename }}
+
